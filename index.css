@@ -1,0 +1,71 @@
+/* Some basic css starts */
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+*::after, *::before {
+    content: "";
+}
+html {
+    font-size: 60%;
+}
+body {
+    width: 100%;
+    height: 100vh;
+}
+.btn {
+    padding: 10px 15px;
+    font-size: 2.4rem;
+    color: #000;
+}
+.w-100 {
+    width: 100% !important;
+}
+.w-75 {
+    width: 75% !important;
+}
+.w-50 {
+    width: 50% !important;
+}
+.w-25 {
+    width: 25% !important;
+}
+.container {
+    width: 84%;
+    padding: 5px;
+    margin: 0 auto;
+}
+.my-basic {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+.my-standard {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+}
+.my-advanced {
+    margin-top: 5rem !important;
+    margin-bottom: 5rem !important;
+}
+.text-right {
+    text-align: end !important;
+}
+/* Basic css ends */
+
+/* Table css starts */
+th, td {
+    border: 1px solid black;
+    padding: 5px 10px;
+    text-align: left;
+    min-width: 200px;
+}
+table {
+    border-collapse: collapse;
+    font-size: 2.4rem;
+    margin: 0 auto;
+}
+  
