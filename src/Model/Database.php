@@ -112,6 +112,14 @@ class Database
         $data = $statement->fetch();
         return $data;
     }
+    
+    public function retrieve_all($query)
+    {
+        $statement = $this->dbconnection->prepare($query);
+        $statement->execute();
+        $data = $statement->fetchAll();
+        return $data;
+    }
 
     public function delete_Update_Store($query, $data_array)
     {
@@ -120,5 +128,18 @@ class Database
             $statement->execute($obj);
         }
         return true;
+    }
+
+    public function get_report_datas()
+    {
+        $query = "SELECT name, SUM(purchase_quantity) as 'quantity', product_price, product_name, SUM(purchase_quantity)*product_price as 'total' 
+        FROM users LEFT JOIN orders ON users.id = orders.user_id 
+        LEFT JOIN order_items on order_items.order_no = orders.order_no 
+        LEFT JOIN products on products.id = order_items.product_id 
+        GROUP BY users.id 
+        ORDER BY quantity 
+        DESC";
+
+        return $this->retrieve_all($query);
     }
 }

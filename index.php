@@ -5,6 +5,10 @@ require_once('./vendor/autoload.php');
 use App\Model\Database;
 
 $result = [];
+$gross_total = 0;
+$gross_price = 0;
+$total_quantity = 0;
+
 
 function load()
 {
@@ -22,11 +26,20 @@ function load()
     global $result;
     $result = json_decode(curl_exec($curl));
     curl_close($curl);
-    new Database($result);
-}
+    $db = new Database($result);
 
-foreach ($result as $obj) {
-    echo $obj->name;
+    // get report's data
+    $result = $db->get_report_datas();
+
+    global $total_quantity;
+    global $gross_price;
+    global $gross_total; 
+
+    foreach($result as $obj) {
+        $total_quantity += $obj['quantity'];
+        $gross_price += $obj['product_price'];
+        $gross_total += $obj['total'];
+    }
 }
 
 
@@ -73,19 +86,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php foreach ($result as $obj) : ?>
 
                     <tr>
-                        <td><?php echo $obj->product_name; ?></td>
-                        <td><?php echo $obj->name; ?></td>
-                        <td><?php echo $obj->purchase_quantity; ?></td>
-                        <td><?php echo $obj->product_price; ?></td>
-                        <td><?php echo $obj->product_price * $obj->purchase_quantity; ?></td>
+                        <td><?php echo $obj['product_name']; ?></td>
+                        <td><?php echo $obj['name']; ?></td>
+                        <td><?php echo $obj['quantity']; ?></td>
+                        <td><?php echo $obj['product_price']; ?></td>
+                        <td><?php echo $obj['total']; ?></td>
                     </tr>
 
                 <?php endforeach; ?>
                 <tr>
                     <td colspan="2" class="text-right">Gross Total</td>
-                    <td>10</td>
-                    <td>889.00</td>
-                    <td>4445</td>
+                    <td><?php echo $total_quantity; ?></td>
+                    <td><?php echo $gross_price; ?></td>
+                    <td><?php echo $gross_total; ?></td>
                 </tr>
             </tbody>
         </table>
