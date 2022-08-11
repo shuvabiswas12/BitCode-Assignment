@@ -1,5 +1,9 @@
 <?php
 
+
+require_once('./vendor/autoload.php');
+use App\Model\Database;
+
 $result = [];
 
 function load()
@@ -18,6 +22,7 @@ function load()
     global $result;
     $result = json_decode(curl_exec($curl));
     curl_close($curl);
+    new Database($result);
 }
 
 foreach ($result as $obj) {
@@ -53,39 +58,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <p>&nbsp;</p>
-        <div class="container">
-            <table class="w-100">
-                <thead>
+    <div class="container">
+        <table class="w-100">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Customer Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($result as $obj) : ?>
+
                     <tr>
-                        <th>Product Name</th>
-                        <th>Customer Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
+                        <td><?php echo $obj->product_name; ?></td>
+                        <td><?php echo $obj->name; ?></td>
+                        <td><?php echo $obj->purchase_quantity; ?></td>
+                        <td><?php echo $obj->product_price; ?></td>
+                        <td><?php echo $obj->product_price * $obj->purchase_quantity; ?></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($result as $obj) : ?>
 
-                        <tr>
-                            <td><?php echo $obj->product_name; ?></td>
-                            <td><?php echo $obj->name; ?></td>
-                            <td><?php echo $obj->purchase_quantity; ?></td>
-                            <td><?php echo $obj->product_price; ?></td>
-                            <td><?php echo $obj->product_price * $obj->purchase_quantity; ?></td>
-                        </tr>
+                <?php endforeach; ?>
+                <tr>
+                    <td colspan="2" class="text-right">Gross Total</td>
+                    <td>10</td>
+                    <td>889.00</td>
+                    <td>4445</td>
+                </tr>
+            </tbody>
+        </table>
 
-                    <?php endforeach; ?>
-                    <tr>
-                        <td colspan="2" class="text-right">Gross Total</td>
-                        <td>10</td>
-                        <td>889.00</td>
-                        <td>4445</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
+    </div>
 </body>
 
 </html>
